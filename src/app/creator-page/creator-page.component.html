@@ -1,0 +1,23 @@
+<div class="slide-editor">
+  <app-toolbox
+    (addTextEvent)="addText()"
+    (addShapeEvent)="addShape()"
+    (changeTextColorEvent)="changeTextColor($event)"
+    (changeTextSizeEvent)="changeTextSize($event)"
+    (changeFontFamilyEvent)="changeFontFamily($event)"
+    (changeHighlightColorEvent)="changeHighlightColor($event)"
+    (changeLineSpacingEvent)="changeLineSpacing($event)"
+  ></app-toolbox>
+  <input type="file" (change)="uploadPpt($event)" accept=".pptx">
+  <div class="slides-container">
+    <div *ngFor="let slide of slides; let i = index" (click)="selectSlide(i)" [class.selected]="i === selectedSlideIndex">
+      <div class="slide-canvas" #slideCanvas>
+        <div *ngFor="let element of slide.elements" [ngSwitch]="element.type" class="draggable resizable" [attr.data-id]="i" (click)="selectElement(element, $event)">
+          <div *ngSwitchCase="'text'" [ngStyle]="element.style" contenteditable="true" class="text-element">{{ element.content }}</div>
+          <div *ngSwitchCase="'shape'" [ngStyle]="element.style" class="shape-element">{{ element.content }}</div>
+        </div>
+      </div>
+    </div>
+    <button (click)="addSlide()">Add Slide</button>
+  </div>
+</div>
